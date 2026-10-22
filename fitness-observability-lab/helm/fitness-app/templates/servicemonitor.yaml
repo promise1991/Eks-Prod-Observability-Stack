@@ -1,0 +1,17 @@
+{{- if .Values.serviceMonitorEnabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "fitness-app.fullname" . }}
+  labels:
+    {{- include "fitness-app.labels" . | nindent 4 }}
+    release: kps
+spec:
+  selector:
+    matchLabels:
+      {{- include "fitness-app.selectorLabels" . | nindent 6 }}
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+{{- end }}

@@ -1,0 +1,24 @@
+replicaCount: 2
+image:
+  repository: 842746302640.dkr.ecr.us-east-1.amazonaws.com/fitness-app   # WHY full ECR URL? Prod pulls from registry, not local
+  tag: v1.0.0    # WHY pinned? Rollback support
+  pullPolicy: IfNotPresent   # WHY IfNotPresent not Always? If pod restarts and ECR is down, uses cached image. Always would fail. Never is anti-prod (only for local hack)
+imagePullSecrets:
+    - name: ecr-secret         # WHY? Links to secret we just created, allows private pull - this is the prod pattern on non-EKS clusters
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+  metricsPort: 8080
+serviceAccount:
+  create: true
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+serviceMonitorEnabled: true
+nameOverride: ""
+fullnameOverride: ""

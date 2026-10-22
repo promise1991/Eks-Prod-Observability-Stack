@@ -1,0 +1,18 @@
+# Tempo lab - NO persistence (uses emptyDir) - avoids EBS issue
+tempo:
+  storage:
+    trace:
+      backend: local
+      wal:
+        path: /var/tempo/wal
+      local:
+        path: /var/tempo/traces
+persistence:
+  enabled: false
+metricsGenerator:
+  enabled: false
+serviceMonitor:
+  enabled: true
+# Use emptyDir so no PVC needed
+emptyDir:
+  enabled: true
